@@ -4,6 +4,58 @@
 
 A Flask-based web application that compares language detection using two different approaches: traditional n-gram analysis and modern open-source pre-trained models. The application features a modern, animated interface with glassmorphism design elements, smooth transitions, and enhanced user experience. Users can input text and see detection results from both methods side-by-side, allowing comparison of traditional NLP techniques versus modern AI approaches. The app provides confidence scores and supports 55+ languages including English, Spanish, French, German, Japanese, Chinese, Arabic, and many others.
 
+## How to Set Up the Project
+
+### Prerequisites
+- Python 3.8 or higher
+- pip (Python package manager)
+- Git (optional, for cloning the repository)
+
+### 1. Clone the Repository
+If you haven’t already, clone the project to your local machine:
+```bash
+git clone https://github.com/adnan8101/language_detector.git
+cd language_detector
+```
+
+### 2. Create a Virtual Environment (Recommended)
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 3. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Set Environment Variables
+Create a `.env` file in the project root (if required) and add your Flask secret key:
+```
+SECRET_KEY=your_secret_key_here
+```
+
+### 5. Run the Application
+```bash
+flask run
+```
+The app will be available at [http://127.0.0.1:5000](http://127.0.0.1:5000).
+
+### 6. Using the App
+- Open your browser and go to the local address above.
+- Enter text in the input box to detect its language using both traditional and modern methods.
+- View results, confidence scores, and compare outputs side-by-side.
+
+### 7. Deactivating the Virtual Environment
+When finished, deactivate with:
+```bash
+deactivate
+```
+
+---
+
+**Note:** For development, use the Flask debug mode by setting `FLASK_ENV=development` in your environment variables.
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
