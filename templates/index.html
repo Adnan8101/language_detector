@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+
+{% block title %}Language Detection - Compare Methods{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Header Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <div class="header-content">
+                <div class="icon-container mb-4">
+                    <i class="fas fa-globe rotating-globe"></i>
+                    <i class="fas fa-language floating-icon"></i>
+                    <i class="fas fa-brain floating-icon-2"></i>
+                </div>
+                <h1 class="display-4 mb-3 animated-title">
+                    Language Detection
+                </h1>
+                <p class="lead text-muted animated-subtitle">
+                    Compare Traditional N-gram Analysis with Modern Open-Source Pre-trained Models
+                </p>
+                <div class="header-stats mt-4">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <div class="stat-item">
+                                <i class="fas fa-chart-line text-success"></i>
+                                <h5>Traditional</h5>
+                                <small class="text-muted">N-gram Analysis</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-item">
+                                <i class="fas fa-brain text-info"></i>
+                                <h5>Pre-trained</h5>
+                                <small class="text-muted">ML Models</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-item">
+                                <i class="fas fa-globe text-warning"></i>
+                                <h5>55+ Languages</h5>
+                                <small class="text-muted">Supported</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Input Section -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-edit me-2"></i>
+                        Text Input
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="detection-form">
+                        <div class="mb-3">
+                            <label for="text-input" class="form-label">Enter text to detect language:</label>
+                            <textarea 
+                                class="form-control" 
+                                id="text-input" 
+                                rows="4" 
+                                placeholder="Enter your text here... (e.g., 'Bonjour tout le monde', 'Hola amigo', 'これは日本語です')"
+                                required
+                            ></textarea>
+                            <div class="form-text">
+                                Minimum 3 characters required for accurate detection.
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Detection Method:</label>
+                            <div class="row g-2">
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="method" id="method-both" value="both" checked>
+                                        <label class="form-check-label w-100" for="method-both">
+                                            <i class="fas fa-arrows-alt-h me-2"></i>
+                                            <span class="d-block d-sm-inline">Both Methods</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="method" id="method-traditional" value="traditional">
+                                        <label class="form-check-label w-100" for="method-traditional">
+                                            <i class="fas fa-chart-bar me-2"></i>
+                                            <span class="d-block d-sm-inline">Traditional N-gram</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="method" id="method-pretrained" value="pretrained">
+                                        <label class="form-check-label w-100" for="method-pretrained">
+                                            <i class="fas fa-brain me-2"></i>
+                                            <span class="d-block d-sm-inline">Pre-trained Model</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg detect-button">
+                                <span class="button-text">
+                                    <i class="fas fa-search me-2"></i>
+                                    Detect Language
+                                </span>
+                                <div class="button-loader" style="display: none;">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    Processing...
+                                </div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Section -->
+    <div id="loading-section" class="row justify-content-center mb-4" style="display: none;">
+        <div class="col-lg-8">
+            <div class="card border-info">
+                <div class="card-body text-center">
+                    <div class="spinner-border text-info me-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    Analyzing text...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results-section" class="row g-3" style="display: none;">
+        <!-- Traditional Method Results -->
+        <div class="col-xl-6 col-lg-12 col-md-12 mb-4">
+            <div class="card h-100" id="traditional-card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0 d-flex align-items-center">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        <span class="d-none d-sm-inline">Traditional N-gram Analysis</span>
+                        <span class="d-sm-none">Traditional</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="traditional-results">
+                        <!-- Traditional results will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pre-trained Model Results -->
+        <div class="col-xl-6 col-lg-12 col-md-12 mb-4">
+            <div class="card h-100" id="pretrained-card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0 d-flex align-items-center">
+                        <i class="fas fa-brain me-2"></i>
+                        <span class="d-none d-sm-inline">Pre-trained Model</span>
+                        <span class="d-sm-none">Pre-trained</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="pretrained-results">
+                        <!-- Pre-trained results will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Section -->
+    <div id="error-section" class="row justify-content-center mb-4" style="display: none;">
+        <div class="col-lg-8">
+            <div class="alert alert-danger" role="alert">
+                <h5 class="alert-heading">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Detection Error
+                </h5>
+                <p id="error-message" class="mb-0"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <div id="about-section" class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        About This Application
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="method-info-card">
+                                <h6 class="text-success mb-3">
+                                    <i class="fas fa-chart-bar me-2"></i>
+                                    Traditional N-gram Method
+                                </h6>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Character-level n-gram analysis</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Statistical pattern recognition</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Fast and lightweight</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Works well with limited data</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="method-info-card">
+                                <h6 class="text-info mb-3">
+                                    <i class="fas fa-brain me-2"></i>
+                                    Pre-trained Model Method
+                                </h6>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-check text-info me-2"></i>Open-source langdetect library</li>
+                                    <li class="mb-2"><i class="fas fa-check text-info me-2"></i>Statistical machine learning approach</li>
+                                    <li class="mb-2"><i class="fas fa-check text-info me-2"></i>Higher accuracy for most languages</li>
+                                    <li><i class="fas fa-check text-info me-2"></i>Supports 55+ languages</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="tech-stack-section">
+                                <h6 class="mb-3">
+                                    <i class="fas fa-tools me-2"></i>
+                                    Technology Stack
+                                </h6>
+                                <div class="row g-3">
+                                    <div class="col-sm-6 col-lg-3">
+                                        <div class="tech-item text-center">
+                                            <i class="fab fa-python mb-2"></i>
+                                            <div class="fw-bold">Backend</div>
+                                            <small class="text-muted">Python Flask</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-3">
+                                        <div class="tech-item text-center">
+                                            <i class="fas fa-cube mb-2"></i>
+                                            <div class="fw-bold">Libraries</div>
+                                            <small class="text-muted">langdetect, langid</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-3">
+                                        <div class="tech-item text-center">
+                                            <i class="fab fa-html5 mb-2"></i>
+                                            <div class="fw-bold">Frontend</div>
+                                            <small class="text-muted">HTML5, CSS3, JS</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-3">
+                                        <div class="tech-item text-center">
+                                            <i class="fab fa-bootstrap mb-2"></i>
+                                            <div class="fw-bold">UI Framework</div>
+                                            <small class="text-muted">Bootstrap 5</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
