@@ -1,13 +1,22 @@
 import os
+import sys
 import logging
 from flask import Flask, render_template, request, jsonify
+
+# Add the current directory to Python path for imports
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Import the language detector from the same directory
 from language_detector import LanguageDetector
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 
-# Create the app
-app = Flask(__name__)
+# Create the app with correct template and static paths for Vercel
+app = Flask(__name__, 
+           template_folder='../templates',
+           static_folder='../static')
+
 app.secret_key = os.environ.get("SESSION_SECRET", "default_secret_key_for_development")
 
 # Initialize language detector
@@ -61,5 +70,6 @@ def health_check():
     """Health check endpoint"""
     return jsonify({'status': 'healthy', 'message': 'Language Detection API is running'})
 
+# Export the app for Vercel (this is important for serverless deployment)
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(debug=True)
